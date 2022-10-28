@@ -4,10 +4,27 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private Enemy[] enemyPrefabs;
     [SerializeField] private PowerUp[] powerupPrefabs;
+    [SerializeField] private Enemy bossPrefab;
+    [SerializeField] private Enemy[] miniEnemyPrefabs;
 
     private const float SpawnRange = 9;
+    private const int BossRound = 2;
+
     private int _enemiesCount;
     private int _waveNumber = 1;
+
+
+    public void SpawnMiniEnemy(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            int randomMini = Random.Range(0, miniEnemyPrefabs.Length);
+            _enemiesCount++;
+            Enemy enemy = Instantiate(miniEnemyPrefabs[randomMini], GenerateSpawnPosition(),
+                miniEnemyPrefabs[randomMini].transform.rotation);
+            enemy.Destroying += OnDestroyingEnemy;
+        }
+    }
 
     private void Start()
     {
@@ -23,7 +40,7 @@ public class SpawnManager : MonoBehaviour
             Enemy enemy = Instantiate(enemyPrefabs[randomEnemy], GenerateSpawnPosition(),
                 enemyPrefabs[randomEnemy].transform.rotation);
             _enemiesCount++;
-            enemy.Destroying += OnDestroying;
+            enemy.Destroying += OnDestroyingEnemy;
         }
     }
 
@@ -34,15 +51,32 @@ public class SpawnManager : MonoBehaviour
             powerupPrefabs[randomPowerup].transform.rotation);
     }
 
-    private void OnDestroying()
+    private void OnDestroyingEnemy()
     {
         _enemiesCount--;
         if (_enemiesCount == 0)
         {
             _waveNumber++;
-            SpawnEnemyWave(_waveNumber);
+            if (_waveNumber % BossRound == 0)
+            {
+                SpawnBossWave(_waveNumber);
+            }
+            else
+            {
+                SpawnEnemyWave(_waveNumber);
+            }
+
             SpawnRandomPowerUp();
         }
+    }
+
+    private void SpawnBossWave(int currentRound)
+    {
+        int miniEnemiesToSpawn = currentRound / BossRound;
+        _enemiesCount++;
+        Enemy boss = Instantiate(bossPrefab, GenerateSpawnPosition(), bossPrefab.transform.rotation);
+        boss.miniEnemySpawnCount = miniEnemiesToSpawn;
+        boss.Destroying += OnDestroyingEnemy;
     }
 
     private static Vector3 GenerateSpawnPosition()

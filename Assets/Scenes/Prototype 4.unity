@@ -251,6 +251,10 @@ MonoBehaviour:
   - {fileID: -1459005176112773448, guid: 3539881fdb75a374299d6f248beb21e8, type: 3}
   - {fileID: -1459005176112773448, guid: 48af9249cd9f1f84faeb69f8f2e94043, type: 3}
   - {fileID: -1459005176112773448, guid: 6d67a447fe9994b4190fbc8a4a71e426, type: 3}
+  bossPrefab: {fileID: 6650725480212534851, guid: 717a1c4638fc35f488a74179f2c5522c, type: 3}
+  miniEnemyPrefabs:
+  - {fileID: 6650725480212534851, guid: 88d3d64c181dfbe479ae37985b763793, type: 3}
+  - {fileID: 6650725480212534851, guid: 1eccdb9aaa569b745aa0d678774799ad, type: 3}
 --- !u!1 &1211016355
 GameObject:
   m_ObjectHideFlags: 0
