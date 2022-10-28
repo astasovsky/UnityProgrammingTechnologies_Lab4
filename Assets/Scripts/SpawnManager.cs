@@ -3,7 +3,7 @@
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private Enemy[] enemyPrefabs;
-    [SerializeField] private GameObject powerupPrefab;
+    [SerializeField] private PowerUp[] powerupPrefabs;
 
     private const float SpawnRange = 9;
     private int _enemiesCount;
@@ -12,7 +12,7 @@ public class SpawnManager : MonoBehaviour
     private void Start()
     {
         SpawnEnemyWave(_waveNumber);
-        Instantiate(powerupPrefab, GenerateSpawnPosition(), powerupPrefab.transform.rotation);
+        SpawnRandomPowerUp();
     }
 
     private void SpawnEnemyWave(int enemiesToSpawn)
@@ -27,6 +27,13 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    private void SpawnRandomPowerUp()
+    {
+        int randomPowerup = Random.Range(0, powerupPrefabs.Length);
+        Instantiate(powerupPrefabs[randomPowerup], GenerateSpawnPosition(),
+            powerupPrefabs[randomPowerup].transform.rotation);
+    }
+
     private void OnDestroying()
     {
         _enemiesCount--;
@@ -34,7 +41,7 @@ public class SpawnManager : MonoBehaviour
         {
             _waveNumber++;
             SpawnEnemyWave(_waveNumber);
-            Instantiate(powerupPrefab, GenerateSpawnPosition(), powerupPrefab.transform.rotation);
+            SpawnRandomPowerUp();
         }
     }
 

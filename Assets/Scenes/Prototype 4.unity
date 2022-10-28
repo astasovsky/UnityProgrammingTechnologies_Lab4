@@ -247,7 +247,9 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 6650725480212534851, guid: f7050e8f77e8859498cc6b68e203f9fb, type: 3}
   - {fileID: 6650725480212534851, guid: 3023039060f508e4ab69019a695d3294, type: 3}
-  powerupPrefab: {fileID: 983398779124479250, guid: 3539881fdb75a374299d6f248beb21e8, type: 3}
+  powerupPrefabs:
+  - {fileID: -1459005176112773448, guid: 3539881fdb75a374299d6f248beb21e8, type: 3}
+  - {fileID: -1459005176112773448, guid: 48af9249cd9f1f84faeb69f8f2e94043, type: 3}
 --- !u!1 &1211016355
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,6 +768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   focalPoint: {fileID: 1411641239}
   powerupIndicator: {fileID: 1502203584}
+  rocketPrefab: {fileID: 780030604406340265, guid: fe77acfdca43c8c47a500c8cf601bf6a, type: 3}
 --- !u!1001 &7305732181041295649
 PrefabInstance:
   m_ObjectHideFlags: 0
