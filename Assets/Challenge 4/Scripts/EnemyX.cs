@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyX : MonoBehaviour
 {
-    public float speed;
+    private const string PlayerGoal = "PlayerGoal";
     private Rigidbody enemyRb;
     private GameObject playerGoal;
 
@@ -12,6 +10,7 @@ public class EnemyX : MonoBehaviour
     void Start()
     {
         enemyRb = GetComponent<Rigidbody>();
+        playerGoal = GameObject.FindWithTag(PlayerGoal);
     }
 
     // Update is called once per frame
@@ -19,8 +18,7 @@ public class EnemyX : MonoBehaviour
     {
         // Set enemy direction towards player goal and move there
         Vector3 lookDirection = (playerGoal.transform.position - transform.position).normalized;
-        enemyRb.AddForce(lookDirection * speed * Time.deltaTime);
-
+        enemyRb.AddForce(SpawnManagerX.EnemySpeed * Time.deltaTime * lookDirection);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -29,12 +27,10 @@ public class EnemyX : MonoBehaviour
         if (other.gameObject.name == "Enemy Goal")
         {
             Destroy(gameObject);
-        } 
+        }
         else if (other.gameObject.name == "Player Goal")
         {
             Destroy(gameObject);
         }
-
     }
-
 }

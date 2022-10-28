@@ -1,9 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControllerX : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem smokeParticle;
+
+    private const float SpeedMultiplier = 2;
     private Rigidbody playerRb;
     private float speed = 500;
     private GameObject focalPoint;
@@ -14,7 +16,8 @@ public class PlayerControllerX : MonoBehaviour
 
     private float normalStrength = 10; // how hard to hit enemy without powerup
     private float powerupStrength = 25; // how hard to hit enemy with powerup
-    
+    private bool _hasImpulse;
+
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -23,13 +26,27 @@ public class PlayerControllerX : MonoBehaviour
 
     void Update()
     {
+        bool hasImpulse = Input.GetKey(KeyCode.Space);
+        if (hasImpulse != _hasImpulse)
+        {
+            _hasImpulse = hasImpulse;
+            if (hasImpulse)
+            {
+                smokeParticle.Play();
+            }
+            else
+            {
+                smokeParticle.Stop();
+            }
+        }
+
         // Add force to player in direction of the focal point (and camera)
         float verticalInput = Input.GetAxis("Vertical");
-        playerRb.AddForce(focalPoint.transform.forward * verticalInput * speed * Time.deltaTime); 
+        playerRb.AddForce((hasImpulse ? SpeedMultiplier : 1) * verticalInput * speed * Time.deltaTime *
+                          focalPoint.transform.forward);
 
         // Set powerup indicator position to beneath player
         powerupIndicator.transform.position = transform.position + new Vector3(0, -0.6f, 0);
-
     }
 
     // If Player collides with powerup, activate powerup
@@ -40,6 +57,7 @@ public class PlayerControllerX : MonoBehaviour
             Destroy(other.gameObject);
             hasPowerup = true;
             powerupIndicator.SetActive(true);
+            StartCoroutine(PowerupCooldown());
         }
     }
 
@@ -57,8 +75,8 @@ public class PlayerControllerX : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             Rigidbody enemyRigidbody = other.gameObject.GetComponent<Rigidbody>();
-            Vector3 awayFromPlayer =  transform.position - other.gameObject.transform.position; 
-           
+            Vector3 awayFromPlayer = other.gameObject.transform.position - transform.position;
+
             if (hasPowerup) // if have powerup hit enemy with powerup force
             {
                 enemyRigidbody.AddForce(awayFromPlayer * powerupStrength, ForceMode.Impulse);
@@ -67,11 +85,6 @@ public class PlayerControllerX : MonoBehaviour
             {
                 enemyRigidbody.AddForce(awayFromPlayer * normalStrength, ForceMode.Impulse);
             }
-
-
         }
     }
-
-
-
 }
