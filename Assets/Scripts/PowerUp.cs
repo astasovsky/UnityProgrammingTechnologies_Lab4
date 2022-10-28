@@ -10,5 +10,6 @@ public enum PowerUpType
 {
     None,
     Pushback,
-    Rockets
+    Rockets,
+    Smash
 }
