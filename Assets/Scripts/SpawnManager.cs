@@ -2,7 +2,7 @@
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private Enemy enemyPrefab;
+    [SerializeField] private Enemy[] enemyPrefabs;
     [SerializeField] private GameObject powerupPrefab;
 
     private const float SpawnRange = 9;
@@ -19,7 +19,9 @@ public class SpawnManager : MonoBehaviour
     {
         for (int i = 0; i < enemiesToSpawn; i++)
         {
-            Enemy enemy = Instantiate(enemyPrefab, GenerateSpawnPosition(), enemyPrefab.transform.rotation);
+            int randomEnemy = Random.Range(0, enemyPrefabs.Length);
+            Enemy enemy = Instantiate(enemyPrefabs[randomEnemy], GenerateSpawnPosition(),
+                enemyPrefabs[randomEnemy].transform.rotation);
             _enemiesCount++;
             enemy.Destroying += OnDestroying;
         }

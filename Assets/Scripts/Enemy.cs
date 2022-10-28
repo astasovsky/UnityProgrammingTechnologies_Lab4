@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private const float Speed = 300;
+    [SerializeField] private float speed = 300;
+
     private const string Player = "Player";
 
     private Rigidbody _enemyRigidbody;
@@ -26,6 +27,6 @@ public class Enemy : MonoBehaviour
         }
 
         Vector3 lookDirection = (_player.position - transform.position).normalized;
-        _enemyRigidbody.AddForce(Speed * Time.deltaTime * lookDirection);
+        _enemyRigidbody.AddForce(speed * Time.deltaTime * lookDirection);
     }
 }
